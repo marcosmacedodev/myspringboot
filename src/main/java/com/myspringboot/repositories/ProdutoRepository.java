@@ -3,9 +3,9 @@ package com.myspringboot.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.myspringboot.model.Categoria;
+import com.myspringboot.model.Produto;
 
 @Repository
-public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
+public interface ProdutoRepository extends JpaRepository<Produto, Integer>{
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,15 +21,28 @@ public class CategoriaController {
 	private CategoriaService cs;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> listar() {
-		List<Categoria> cats = cs.buscar();
+	public ResponseEntity<?> read() {
+		List<Categoria> cats = cs.findAll();
 		return ResponseEntity.ok().body(cats);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> listar(@PathVariable Integer id) {
-		Categoria cat = cs.buscar(id);
+	public ResponseEntity<?> read(@PathVariable Integer id) {
+		Categoria cat = cs.find(id);
 		return ResponseEntity.ok().body(cat);
 	}
+	
+	@RequestMapping(value="/create", method=RequestMethod.POST)
+	public ResponseEntity<?> create(@RequestBody Categoria categoria){
+		Categoria cat = cs.save(categoria);
+		return ResponseEntity.ok().body(cat);
+	}
+	
+	public ResponseEntity<?> update(@RequestBody Categoria categoria, @PathVariable Integer id)
+	{
+		return null;
+	}
+	
+	
 	
 }

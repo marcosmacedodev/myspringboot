@@ -15,13 +15,21 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository cr;
 	
-	public List<Categoria> buscar(){
+	public List<Categoria> findAll()
+	{
 		return cr.findAll();
 	}
 	
-	public Categoria buscar(Integer id) {
+	public Categoria find(Integer id) 
+	{
 		Optional<Categoria> cat = cr.findById(id);
 		return cat.orElse(null);	
 	}
+	
+	public Categoria save(Categoria categoria) 
+	{
+		return cr.save(categoria);
+	}
+	
 
 }
