@@ -20,7 +20,8 @@ public class Produto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id 
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	private double preco;
@@ -31,7 +32,7 @@ public class Produto implements Serializable{
 	joinColumns=@JoinColumn(name="produto_id"),
 	inverseJoinColumns=@JoinColumn(name="categoria_id")
 	)
-	private List<Categoria> categorias = new ArrayList<>();
+	private List<Categoria> categorias;
 	
 	public Produto()
 	{
