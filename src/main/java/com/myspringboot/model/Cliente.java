@@ -1,14 +1,21 @@
 package com.myspringboot.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.myspringboot.model.enums.TipoCliente;
 
 @Entity
 public class Cliente implements Serializable{
@@ -24,19 +31,31 @@ public class Cliente implements Serializable{
 	private int tipo;
 	
 	@OneToMany(mappedBy="cliente")
-	private List<Endereco> enderecos;
+	private List<Endereco> enderecos = new ArrayList<>();
+	
+	@ElementCollection
+	@CollectionTable(name="TELEFONE")
+	private Set<String> telefones = new HashSet<>();
 	
 	public Cliente() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Cliente(Integer id, String nome, String email) {
+	public Cliente(Integer id, String nome, String email, String cpfouCnpJ, TipoCliente tipo) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.cpfouCnpJ = cpfouCnpJ;
+		this.tipo = tipo.getId();
 	}
 	
+	public Set<String> getTelefones() {
+		return telefones;
+	}
+	public void setTelefones(Set<String> telefones) {
+		this.telefones = telefones;
+	}
 	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}

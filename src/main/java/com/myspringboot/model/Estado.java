@@ -1,6 +1,7 @@
 package com.myspringboot.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class Estado implements Serializable{
 	private String nome;
 	
 	@OneToMany(mappedBy="estado")
-	private List<Cidade> cidades;
+	private List<Cidade> cidades = new ArrayList<>();
 	
 	public Estado() {
 		super();
