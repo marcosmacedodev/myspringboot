@@ -21,13 +21,13 @@ public class CategoriaController {
 	private CategoriaService cs;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> read() {
+	public ResponseEntity<?> getAll() {
 		List<Categoria> cats = cs.findAll();
 		return ResponseEntity.ok().body(cats);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> read(@PathVariable Integer id) {
+	public ResponseEntity<?> get(@PathVariable Integer id) {
 		Categoria cat = cs.find(id);
 		return ResponseEntity.ok().body(cat);
 	}
