@@ -34,4 +34,11 @@ public class CategoriaService {
 	}
 	
 
+	
+	public Categoria remove(Integer id){
+		Categoria categoria = find(id);
+		cr.delete(categoria);
+		return categoria;
+	}
+
 }

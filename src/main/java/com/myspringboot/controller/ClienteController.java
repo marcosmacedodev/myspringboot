@@ -42,15 +42,15 @@ public class ClienteController {
 		return ResponseEntity.created(uri).build();
 	}
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<?> update(@RequestBody Cliente cliente, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@RequestBody Cliente cliente, @PathVariable Integer id){
 		cs.find(id);
 		cliente.setId(id);
-		cliente = cs.save(cliente);
-		return ResponseEntity.ok().body(cliente);
+		cs.save(cliente);
+		return ResponseEntity.noContent().build();
 	}
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<?> delete(@PathVariable Integer id){
-		Cliente cliente = cs.remove(id);
-		return ResponseEntity.ok().body(cliente);
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
+		cs.remove(id);
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -34,11 +34,27 @@ public class CategoriaController {
 		return ResponseEntity.ok().body(cat);
 	}
 	
-	@RequestMapping(value="/create", method=RequestMethod.POST)
+	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> create(@RequestBody Categoria categoria){
 		categoria.setId(null);
 		categoria = cs.save(categoria);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria categoria, @PathVariable Integer id){
+		cs.find(id);
+		categoria.setId(id);
+		cs.save(categoria);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
+		cs.remove(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	
 }

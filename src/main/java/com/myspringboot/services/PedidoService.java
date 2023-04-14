@@ -29,5 +29,11 @@ public class PedidoService {
 	public Pedido save(Pedido pedido) {
 		return pr.save(pedido);
 	}
+	
+	public Pedido remove(Integer id) {
+		Pedido pedido = find(id);
+		pr.delete(pedido);
+		return pedido;
+	}
 
 }

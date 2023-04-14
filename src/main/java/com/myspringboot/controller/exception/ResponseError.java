@@ -44,6 +44,4 @@ public class ResponseError implements Serializable{
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
-
-
 }

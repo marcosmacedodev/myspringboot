@@ -42,5 +42,16 @@ public class PedidoController {
 		return ResponseEntity.created(uri).build();
 	}
 	
-
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Pedido pedido, @PathVariable Integer id){
+		ps.find(id);
+		pedido.setId(id);
+		ps.save(pedido);
+		return ResponseEntity.noContent().build();
+	}
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
+		ps.remove(id);
+		return ResponseEntity.noContent().build();
+	}
 }
