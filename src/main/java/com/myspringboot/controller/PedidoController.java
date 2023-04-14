@@ -2,6 +2,7 @@ package com.myspringboot.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myspringboot.model.Pedido;
+import com.myspringboot.model.dto.PedidoDTO;
 import com.myspringboot.services.PedidoService;
 
 @RequestMapping(value="/pedidos")
@@ -23,10 +25,11 @@ public class PedidoController {
 	private PedidoService ps;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> getAll(){
+	public ResponseEntity<List<PedidoDTO>> getAll(){
 		
 		List<Pedido> pedidos = ps.findAll();
-		return ResponseEntity.ok().body(pedidos);
+		List<PedidoDTO> pedidosDTO = pedidos.stream().map(pedido -> new PedidoDTO(pedido)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(pedidosDTO);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)

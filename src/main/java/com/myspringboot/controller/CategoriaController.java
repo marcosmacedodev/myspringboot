@@ -1,7 +1,9 @@
 package com.myspringboot.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myspringboot.model.Categoria;
+import com.myspringboot.model.dto.CategoriaDTO;
 import com.myspringboot.services.CategoriaService;
 
 @RestController
@@ -23,15 +26,16 @@ public class CategoriaController {
 	private CategoriaService cs;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> getAll() {
-		List<Categoria> cats = cs.findAll();
-		return ResponseEntity.ok().body(cats);
+	public ResponseEntity<List<CategoriaDTO>> getAll() {
+		List<Categoria> categorias = cs.findAll();
+		List<CategoriaDTO> categoriasDTO = categorias.stream().map(categoria -> new CategoriaDTO(categoria)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(categoriasDTO);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> get(@PathVariable Integer id) {
-		Categoria cat = cs.find(id);
-		return ResponseEntity.ok().body(cat);
+	public ResponseEntity<Categoria> get(@PathVariable Integer id) {
+		Categoria categoria = cs.find(id);
+		return ResponseEntity.ok().body(categoria);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)

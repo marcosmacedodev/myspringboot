@@ -2,6 +2,7 @@ package com.myspringboot.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myspringboot.model.Cliente;
+import com.myspringboot.model.dto.ClienteDTO;
 import com.myspringboot.services.ClienteService;
 
 @RestController
@@ -23,10 +25,11 @@ public class ClienteController {
 	private ClienteService cs;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> getAll()
+	public ResponseEntity<List<ClienteDTO>> getAll()
 	{
-		List<Cliente> obj = cs.findAll();
-		return ResponseEntity.ok().body(obj);	
+		List<Cliente> clientes = cs.findAll();
+		List<ClienteDTO> clientesDTO = clientes.stream().map(cliente -> new ClienteDTO(cliente)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(clientesDTO);	
 	}
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> get(@PathVariable Integer id)
