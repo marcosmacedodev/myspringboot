@@ -25,5 +25,9 @@ public class PedidoService {
 		Optional<Pedido> obj = pr.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
+	
+	public Pedido save(Pedido pedido) {
+		return pr.save(pedido);
+	}
 
 }

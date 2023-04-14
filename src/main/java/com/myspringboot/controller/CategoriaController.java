@@ -1,5 +1,6 @@
 package com.myspringboot.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myspringboot.model.Categoria;
 import com.myspringboot.services.CategoriaService;
@@ -33,16 +35,10 @@ public class CategoriaController {
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public ResponseEntity<?> create(@RequestBody Categoria categoria){
-		Categoria cat = cs.save(categoria);
-		return ResponseEntity.ok().body(cat);
+	public ResponseEntity<Void> create(@RequestBody Categoria categoria){
+		categoria.setId(null);
+		categoria = cs.save(categoria);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
-	
-	public ResponseEntity<?> update(@RequestBody Categoria categoria, @PathVariable Integer id)
-	{
-		return null;
-	}
-	
-	
-	
 }

@@ -24,5 +24,17 @@ public class ClienteService {
 		Optional<Cliente> obj = cr.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
+	
+	public Cliente save(Cliente cliente) {
+		return cr.save(cliente);
+	}
+	
+	public Cliente remove(Integer id) {
+		Cliente cliente = find(id);
+		
+		cr.delete(cliente);
+		
+		return cliente;
+	}
 
 }
