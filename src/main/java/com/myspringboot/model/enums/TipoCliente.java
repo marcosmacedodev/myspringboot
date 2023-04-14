@@ -3,7 +3,7 @@ package com.myspringboot.model.enums;
 public enum TipoCliente {
 	PESSOA_FISICA(1, "Pessoa Física"), PESSOA_JURIDICA(2, "Pessoa Jurídica");
 	
-	private int id;
+	private Integer id;
 	private String descricao;
 	
 	private TipoCliente(int id, String descricao) {
@@ -11,7 +11,7 @@ public enum TipoCliente {
 		this.descricao = descricao;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
@@ -19,13 +19,15 @@ public enum TipoCliente {
 		return descricao;
 	}
 	
-	public static TipoCliente contains(int id) {
+	public static TipoCliente toEnum(Integer id) {
+		
+		if (id == null) return null;
 		for(TipoCliente tp : TipoCliente.values()) {
-			if (tp.id == id)
+			if (tp.id.equals(id))
 			{
 				return tp;
 			}
 		}
-		return null;
+		throw new IllegalArgumentException("Id inválido " + id);
 	}
 }

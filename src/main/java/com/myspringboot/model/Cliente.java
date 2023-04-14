@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -29,7 +28,7 @@ public class Cliente implements Serializable{
 	private String nome;
 	private String email;
 	private String cpfouCnpJ;
-	private int tipo;
+	private Integer tipo;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="cliente")
@@ -38,6 +37,9 @@ public class Cliente implements Serializable{
 	@ElementCollection
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
+	
+	@OneToMany(mappedBy="cliente")
+	List<Pedido> pedidos = new ArrayList<>();
 	
 	public Cliente() {
 		super();
@@ -50,19 +52,6 @@ public class Cliente implements Serializable{
 		this.email = email;
 		this.cpfouCnpJ = cpfouCnpJ;
 		this.tipo = tipo.getId();
-	}
-	
-	public Set<String> getTelefones() {
-		return telefones;
-	}
-	public void setTelefones(Set<String> telefones) {
-		this.telefones = telefones;
-	}
-	public List<Endereco> getEnderecos() {
-		return enderecos;
-	}
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
 	}
 	public Integer getId() {
 		return id;
@@ -82,7 +71,6 @@ public class Cliente implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
 	public String getCpfouCnpJ() {
 		return cpfouCnpJ;
 	}
@@ -90,31 +78,29 @@ public class Cliente implements Serializable{
 		this.cpfouCnpJ = cpfouCnpJ;
 	}
 	public TipoCliente getTipo() {
-		return TipoCliente.contains(tipo);
+		return TipoCliente.toEnum(tipo);
 	}
 	public void setTipo(TipoCliente tipo) {
 		this.tipo = tipo.getId();
 	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		return Objects.equals(id, other.id);
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
-	@Override
-	public String toString() {
-		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + "]";
+	public Set<String> getTelefones() {
+		return telefones;
+	}
+	public void setTelefones(Set<String> telefones) {
+		this.telefones = telefones;
+	}
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 	
 	
-
 }
