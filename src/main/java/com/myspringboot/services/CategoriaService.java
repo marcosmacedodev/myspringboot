@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.myspringboot.model.Categoria;
 import com.myspringboot.repositories.CategoriaRepository;
+import com.myspringboot.services.exceptions.DataIntegrityException;
 import com.myspringboot.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -32,8 +34,6 @@ public class CategoriaService {
 	{
 		return cr.save(categoria);
 	}
-	
-
 	
 	public Categoria remove(Integer id){
 		Categoria categoria = find(id);
