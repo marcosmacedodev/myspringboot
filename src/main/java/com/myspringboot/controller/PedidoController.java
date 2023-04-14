@@ -9,27 +9,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.myspringboot.model.Cliente;
-import com.myspringboot.services.ClienteService;
+import com.myspringboot.model.Pedido;
+import com.myspringboot.services.PedidoService;
 
+@RequestMapping(value="/pedidos")
 @RestController
-@RequestMapping(value="/clientes")
-public class ClienteController {
+public class PedidoController {
 	
 	@Autowired
-	private ClienteService cs;
+	private PedidoService ps;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<?> getAll()
-	{
-		List<Cliente> obj = cs.findAll();
-		return ResponseEntity.ok().body(obj);	
+	public ResponseEntity<?> getAll(){
+		
+		List<Pedido> pedidos = ps.findAll();
+		return ResponseEntity.ok().body(pedidos);
 	}
-	@RequestMapping(value="/{id}")
-	public ResponseEntity<?> get(@PathVariable Integer id)
-	{
-		Cliente obj = cs.find(id);
-		return ResponseEntity.ok().body(obj);
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<?> get(@PathVariable Integer id){
+		Pedido pedido = ps.find(id);
+		return ResponseEntity.ok().body(pedido);
 	}
+	
 
 }
