@@ -9,7 +9,6 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.myspringboot.model.Cliente;
-import com.myspringboot.model.enums.TipoCliente;
 
 public class ClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -21,8 +20,8 @@ public class ClienteDTO implements Serializable {
 	@NotEmpty(message="Preenchimento obrigatório.")
 	@Email(message="E-mail inválido")
 	private String email;
-	private String cpfouCnpJ;
-	private Integer tipo;
+	//private String cpfouCnpJ;
+	//private Integer tipo;
 	
 	public ClienteDTO() {
 		super();
@@ -34,8 +33,8 @@ public class ClienteDTO implements Serializable {
 		id = cliente.getId();
 		nome = cliente.getNome();
 		email = cliente.getEmail();
-		cpfouCnpJ = cliente.getCpfouCnpJ();
-		tipo = cliente.getTipo().getId();
+		//cpfouCnpJ = cliente.getCpfouCnpJ();
+		//tipo = (cliente.getTipo() == null)? null:  cliente.getTipo().getId();
 	}
 
 	public Integer getId() {
@@ -62,21 +61,21 @@ public class ClienteDTO implements Serializable {
 		this.email = email;
 	}
 
-	public String getCpfouCnpJ() {
-		return cpfouCnpJ;
-	}
-
-	public void setCpfouCnpJ(String cpfouCnpJ) {
-		this.cpfouCnpJ = cpfouCnpJ;
-	}
-
-	public TipoCliente getTipo() {
-		return TipoCliente.toEnum(tipo);
-	}
-
-	public void setTipo(TipoCliente tipo) {
-		this.tipo = tipo.getId();
-	}
+//	public String getCpfouCnpJ() {
+//		return cpfouCnpJ;
+//	}
+//
+//	public void setCpfouCnpJ(String cpfouCnpJ) {
+//		this.cpfouCnpJ = cpfouCnpJ;
+//	}
+//
+//	public Integer getTipo() {
+//		return tipo;
+//	}
+//
+//	public void setTipo(Integer tipo) {
+//		this.tipo = tipo;
+//	}
 
 	@Override
 	public int hashCode() {

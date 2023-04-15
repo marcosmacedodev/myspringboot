@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myspringboot.model.Cliente;
 import com.myspringboot.model.dto.ClienteDTO;
+import com.myspringboot.model.dto.ClienteNewDTO;
 import com.myspringboot.services.ClienteService;
 
 @RestController
@@ -40,14 +43,14 @@ public class ClienteController {
 		return ResponseEntity.ok().body(obj);
 	}
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> create(@RequestBody ClienteDTO clienteDTO){
-		Cliente cliente = cs.toCliente(clienteDTO);
-		cliente = cs.create(cliente);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
+	public ResponseEntity<Void> create(@Valid @RequestBody ClienteNewDTO clienteNewDTO){
+		Cliente newCliente = cs.toCliente(clienteNewDTO);
+		newCliente = cs.insert(newCliente);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newCliente.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody ClienteDTO clienteDTO, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO clienteDTO, @PathVariable Integer id){
 		Cliente cliente = cs.toCliente(clienteDTO);
 		cs.update(cliente, id);
 		return ResponseEntity.noContent().build();
