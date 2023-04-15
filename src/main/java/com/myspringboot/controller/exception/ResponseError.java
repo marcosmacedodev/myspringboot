@@ -9,18 +9,18 @@ public class ResponseError implements Serializable{
 	private String error;
 	private Integer status;
 	private Long timestamp;
-	private String requestURI;
+	private String path;
 	
 	public ResponseError() {
 		super();
 	}
 
-	public ResponseError(String error, Integer status, Long timestamp, String requestURI) {
+	public ResponseError(String error, Integer status, Long timestamp, String path) {
 		super();
 		this.error = error;
 		this.status = status;
 		this.timestamp = timestamp;
-		this.requestURI = requestURI;
+		this.path = path;
 	}
 
 	public String getError() {
@@ -47,12 +47,12 @@ public class ResponseError implements Serializable{
 		this.timestamp = timestamp;
 	}
 
-	public String getRequestURI() {
-		return requestURI;
+	public String getPath() {
+		return path;
 	}
 
-	public void setRequestURI(String requestURI) {
-		this.requestURI = requestURI;
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 	
