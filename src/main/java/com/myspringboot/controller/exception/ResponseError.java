@@ -6,27 +6,29 @@ public class ResponseError implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String message;
+	private String error;
 	private Integer status;
 	private Long timestamp;
+	private String requestURI;
 	
 	public ResponseError() {
 		super();
 	}
 
-	public ResponseError(String message, Integer status, Long timestamp) {
+	public ResponseError(String error, Integer status, Long timestamp, String requestURI) {
 		super();
-		this.message = message;
+		this.error = error;
 		this.status = status;
 		this.timestamp = timestamp;
+		this.requestURI = requestURI;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getError() {
+		return error;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setError(String message) {
+		this.error = message;
 	}
 
 	public Integer getStatus() {
@@ -44,4 +46,14 @@ public class ResponseError implements Serializable{
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
+
+	public String getRequestURI() {
+		return requestURI;
+	}
+
+	public void setRequestURI(String requestURI) {
+		this.requestURI = requestURI;
+	}
+	
+	
 }

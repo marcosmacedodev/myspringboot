@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.myspringboot.model.Categoria;
+import com.myspringboot.model.dto.CategoriaDTO;
 import com.myspringboot.repositories.CategoriaRepository;
 import com.myspringboot.services.exceptions.ObjectNotFoundException;
 
@@ -46,6 +47,10 @@ public class CategoriaService {
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return cr.findAll(pageRequest);
+	}
+	
+	public Categoria toCategoria(CategoriaDTO categoriaDTO) {
+		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
 	}
 
 }
