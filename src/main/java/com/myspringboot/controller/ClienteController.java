@@ -42,17 +42,14 @@ public class ClienteController {
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> create(@RequestBody ClienteDTO clienteDTO){
 		Cliente cliente = cs.toCliente(clienteDTO);
-		cliente.setId(null);
-		cliente = cs.save(cliente);
+		cliente = cs.create(cliente);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody ClienteDTO clienteDTO, @PathVariable Integer id){
-		cs.find(id);
 		Cliente cliente = cs.toCliente(clienteDTO);
-		cliente.setId(id);
-		cs.save(cliente);
+		cs.update(cliente, id);
 		return ResponseEntity.noContent().build();
 	}
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
@@ -69,6 +66,5 @@ public class ClienteController {
 		Page<Cliente> clientes = cs.findPage(page, linesPerPage, orderBy, direction);
 		Page<ClienteDTO> clientesDTO = clientes.map(cliente -> new ClienteDTO(cliente));
 		return ResponseEntity.ok().body(clientesDTO);
-		
 	}
 }

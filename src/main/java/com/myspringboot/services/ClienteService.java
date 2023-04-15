@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.myspringboot.model.Cliente;
 import com.myspringboot.model.dto.ClienteDTO;
-import com.myspringboot.model.enums.TipoCliente;
 import com.myspringboot.repositories.ClienteRepository;
 import com.myspringboot.services.exceptions.ObjectNotFoundException;
 
@@ -29,9 +28,32 @@ public class ClienteService {
 		Optional<Cliente> obj = cr.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
+
+	public Cliente create(Cliente newCliente) {
+		newCliente.setId(null);
+		return cr.save(newCliente);
+	}
 	
-	public Cliente save(Cliente cliente) {
-		return cr.save(cliente);
+	public Cliente update(Cliente cliente, Integer id) {
+		Cliente clienteBD = find(id);
+		cliente.setId(id);
+		validarCliente(clienteBD, cliente);
+		return cr.save(clienteBD);
+	}
+	
+	private void validarCliente(Cliente clienteBD, Cliente cliente) {
+		if(cliente.getNome() != null) {
+			clienteBD.setNome(cliente.getNome());
+		}
+		if (cliente.getEmail() != null) {
+			clienteBD.setEmail(cliente.getEmail());
+		}
+		if (cliente.getCpfouCnpJ() != null) {
+			clienteBD.setCpfouCnpJ(cliente.getCpfouCnpJ());
+		}
+		if (cliente.getTipo() != null) {
+			clienteBD.setTipo(cliente.getTipo());
+		}
 	}
 	
 	public Cliente remove(Integer id) {
