@@ -15,7 +15,7 @@ import com.myspringboot.model.enums.TipoCliente;
 import com.myspringboot.repositories.ClienteRepository;
 import com.myspringboot.services.validation.utils.Utils;
 
-public class InsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
+public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
 	 
 	@Autowired
 	private ClienteRepository cr;
