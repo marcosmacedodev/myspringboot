@@ -154,8 +154,8 @@ public class MyspringbootApplication implements CommandLineRunner{
 		ped1.setPagamento(pagto1);
 		ped2.setPagamento(pagto2);
 		
-		ped1.getItensPedido().addAll(Arrays.asList(ip1, ip2));
-		ped2.getItensPedido().addAll(Arrays.asList(ip3));
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
 		
 		ped1.setEndereco(e1);
 		ped2.setEndereco(e2);

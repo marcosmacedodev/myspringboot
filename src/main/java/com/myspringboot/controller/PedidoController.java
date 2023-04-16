@@ -40,22 +40,12 @@ public class PedidoController {
 		return ResponseEntity.ok().body(pedido);
 	}
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> create(@RequestBody PedidoDTO pedidoDTO){
-		Pedido pedido = ps.toPedido(pedidoDTO);
-		pedido.setId(null);
-		pedido = ps.save(pedido);
+	public ResponseEntity<Void> create(@RequestBody Pedido pedido){
+		pedido = ps.insert(pedido);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pedido.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody PedidoDTO pedidoDTO, @PathVariable Integer id){
-		ps.find(id);
-		Pedido pedido = ps.toPedido(pedidoDTO);
-		pedido.setId(id);
-		ps.save(pedido);
-		return ResponseEntity.noContent().build();
-	}
+
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		ps.remove(id);

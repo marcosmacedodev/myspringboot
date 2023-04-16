@@ -48,7 +48,6 @@ public class ClienteService {
 	
 	public Cliente update(Cliente cliente, Integer id) {
 		Cliente clienteBD = find(id);
-		cliente.setId(id);
 		validarCliente(clienteBD, cliente);
 		return cr.save(clienteBD);
 	}

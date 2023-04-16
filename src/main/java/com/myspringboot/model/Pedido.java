@@ -39,8 +39,8 @@ public class Pedido implements Serializable {
 	private Pagamento pagamento;
 	//para entrega
 	@ManyToOne
-	@JoinColumn(name="endereco_id")
-	private Endereco endereco;
+	@JoinColumn(name="enderecoDeEntrega_id")
+	private Endereco enderecoDeEntrega;
 	
 	public Pedido() {
 		super();
@@ -93,12 +93,12 @@ public class Pedido implements Serializable {
 		this.pagamento = pagamento;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
+	public Endereco getEnderecoDeEntrega() {
+		return enderecoDeEntrega;
 	}
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setEndereco(Endereco enderecoDeEntrega) {
+		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 
 	@Override
@@ -118,11 +118,11 @@ public class Pedido implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-	public Set<ItemPedido> getItensPedido() {
+	public Set<ItemPedido> getItens() {
 		return itensPedido;
 	}
 
-	public void setItensPedido(Set<ItemPedido> itensPedido) {
+	public void setItens(Set<ItemPedido> itensPedido) {
 		this.itensPedido = itensPedido;
 	}
 }

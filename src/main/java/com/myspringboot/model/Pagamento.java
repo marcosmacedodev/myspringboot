@@ -12,10 +12,12 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.myspringboot.model.enums.EstadoPagamento;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Pagamento implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -36,7 +38,7 @@ public abstract class Pagamento implements Serializable{
 	public Pagamento(Integer id, EstadoPagamento estado) {
 		super();
 		this.id = id;
-		this.estado = estado.getId();
+		this.estado = (estado == null) ? null: estado.getId();
 	}
 	public Integer getId() {
 		return id;
@@ -44,11 +46,11 @@ public abstract class Pagamento implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getEstado() {
-		return estado;
+	public EstadoPagamento getEstado() {
+		return EstadoPagamento.toEnum(estado);
 	}
-	public void setEstado(Integer estado) {
-		this.estado = estado;
+	public void setEstado(EstadoPagamento estado) {
+		this.estado = (estado == null) ? null : estado.getId();
 	}
 	public Pedido getPedido() {
 		return pedido;
