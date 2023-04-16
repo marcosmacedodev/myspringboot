@@ -52,6 +52,14 @@ public class Pedido implements Serializable {
 		this.id = id;
 		this.instante = instante;
 	}
+	
+	public Double getValorTotal() {
+		Double soma = 0.0;
+		for(ItemPedido itemPedido: itensPedido) {
+			soma += itemPedido.getSubTotal();
+		}
+		return soma;
+	}
 
 	public Integer getId() {
 		return id;
@@ -117,6 +125,4 @@ public class Pedido implements Serializable {
 	public void setItensPedido(Set<ItemPedido> itensPedido) {
 		this.itensPedido = itensPedido;
 	}
-	
-	
 }
