@@ -52,6 +52,10 @@ public class DBService {
 	@Autowired
 	private PedidoRepository pedr;
 	
+	public void instantiateDevDatabase() throws ParseException {
+		instantiateTestDatabase();
+	}
+	
 	public void instantiateTestDatabase() throws ParseException
 	{
 		Categoria cat1 = new Categoria(null, "Informática");
