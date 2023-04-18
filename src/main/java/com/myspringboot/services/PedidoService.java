@@ -17,8 +17,6 @@ import com.myspringboot.model.PagamentoComBoleto;
 import com.myspringboot.model.Pedido;
 import com.myspringboot.model.dto.PedidoDTO;
 import com.myspringboot.model.enums.EstadoPagamento;
-import com.myspringboot.repositories.ItemPedidoRepository;
-import com.myspringboot.repositories.PagamentoRepository;
 import com.myspringboot.repositories.PedidoRepository;
 import com.myspringboot.services.exceptions.ObjectNotFoundException;
 
@@ -30,11 +28,15 @@ public class PedidoService {
 	@Autowired
 	private BoletoService bs;
 	@Autowired
-	private PagamentoRepository par;
+	private PagamentoService pas;
 	@Autowired
 	private ProdutoService ps;
 	@Autowired
-	private ItemPedidoRepository ipr;
+	private ItemPedidoService ips;
+	@Autowired
+	private ClienteService cls;
+	@Autowired
+	private EnderecoService es;
 	
 	public List<Pedido> findAll(){
 		return pr.findAll();
@@ -48,6 +50,8 @@ public class PedidoService {
 	public Pedido insert(Pedido pedido) {
 		pedido.setId(null);
 		pedido.setInstante(new Date());
+		pedido.setCliente(cls.find(pedido.getCliente().getId()));
+		pedido.setEndereco(es.find(pedido.getEnderecoDeEntrega().getId()));
 		pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		pedido.getPagamento().setPedido(pedido);
 		if (pedido.getPagamento() instanceof PagamentoComBoleto) {
@@ -55,13 +59,15 @@ public class PedidoService {
 			bs.preencherPagamentoComBoleto(pagtoBoleto, pedido.getInstante());
 		}
 		pedido = pr.save(pedido);
-		par.save(pedido.getPagamento());
+		pas.insert(pedido.getPagamento());
 		for(ItemPedido ip : pedido.getItens()) {
 			ip.setDesconto(0.0);
-			ip.setPreco(ps.find(ip.getProduto().getId()).getPreco());
+			ip.setProduto(ps.find(ip.getProduto().getId()));
+			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(pedido);
 		}
-		ipr.saveAll(pedido.getItens());
+		ips.insertAll(pedido.getItens());
+		System.out.println(pedido);
 		return pedido;
 	}
 	
