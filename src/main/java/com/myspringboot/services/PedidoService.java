@@ -37,6 +37,8 @@ public class PedidoService {
 	private ClienteService cls;
 	@Autowired
 	private EnderecoService es;
+	@Autowired
+	private EmailService emailService;
 	
 	public List<Pedido> findAll(){
 		return pr.findAll();
@@ -67,7 +69,7 @@ public class PedidoService {
 			ip.setPedido(pedido);
 		}
 		ips.insertAll(pedido.getItens());
-		System.out.println(pedido);
+		emailService.sendOrderConfirmationEmail(pedido);
 		return pedido;
 	}
 	
