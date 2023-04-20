@@ -28,7 +28,11 @@ public class PagamentoService {
 	}
 	
 	public Pagamento insert(Pagamento pagamento) {
-		
+		pagamento.setId(null);
 		return pr.save(pagamento);
+	}
+	
+	public List<Pagamento> insertAll(List<Pagamento> pagamentos){
+		return pr.saveAll(pagamentos);
 	}
 }

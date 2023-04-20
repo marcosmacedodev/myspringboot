@@ -28,6 +28,11 @@ public class EnderecoService {
 	}
 	
 	public Endereco insert(Endereco endereco) {
+		endereco.setId(null);
 		return er.save(endereco);
+	}
+	
+	public List<Endereco> insertAll(List<Endereco> enderecos){
+		return er.saveAll(enderecos);
 	}
 }

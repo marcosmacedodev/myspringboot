@@ -29,7 +29,7 @@ public class ItemPedidoService {
 	}
 	
 	public ItemPedido insert(ItemPedido itemPedido) {
-		
+		itemPedido.setId(null);
 		return ipr.save(itemPedido);
 	}
 	

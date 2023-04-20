@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,8 @@ public class ClienteService {
 	private ClienteRepository cr;
 	@Autowired
 	private EnderecoRepository er;
+	@Autowired
+	private BCryptPasswordEncoder bcpe;
 	
 	public List<Cliente> findAll(){
 		return cr.findAll();
@@ -44,6 +47,10 @@ public class ClienteService {
 		newCliente = cr.save(newCliente);
 		er.saveAll(newCliente.getEnderecos());
 		return newCliente;
+	}
+	
+	public List<Cliente> insertAll(List<Cliente> clientes){
+		return cr.saveAll(clientes);
 	}
 	
 	public Cliente update(Cliente cliente, Integer id) {
@@ -79,7 +86,7 @@ public class ClienteService {
 	}
 	
 	public Cliente toCliente(ClienteNewDTO clienteNewDTO) {
-		Cliente cli = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfouCnpJ(), TipoCliente.toEnum( clienteNewDTO.getTipo()));
+		Cliente cli = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfouCnpJ(), TipoCliente.toEnum( clienteNewDTO.getTipo()), bcpe.encode(clienteNewDTO.getSenha()));
 		Endereco end = new Endereco(null, clienteNewDTO.getLogradouro(), clienteNewDTO.getNumero(), clienteNewDTO.getComplemento(), clienteNewDTO.getBairro(), clienteNewDTO.getCep());
 		end.setCliente(cli);
 		
@@ -94,7 +101,7 @@ public class ClienteService {
 	}
 	
 	public Cliente toCliente(ClienteDTO clienteDTO) {
-		return new Cliente(null, clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
+		return new Cliente(null, clienteDTO.getNome(), clienteDTO.getEmail(), null, null, null);
 	}
 
 }

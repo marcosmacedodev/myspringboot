@@ -46,19 +46,16 @@ public class CategoriaController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> create(@Valid @RequestBody CategoriaDTO categoriaDTO){
-		categoriaDTO.setId(null);
 		Categoria categoria = cs.toCategoria(categoriaDTO);
-		categoria = cs.save(categoria);
+		categoria = cs.insert(categoria);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO categoriaDTO, @PathVariable Integer id){
-		cs.find(id);
 		Categoria categoria = cs.toCategoria(categoriaDTO);
-		categoria.setId(id);
-		cs.save(categoria);
+		cs.update(categoria, id);
 		return ResponseEntity.noContent().build();
 	}
 	
@@ -78,5 +75,4 @@ public class CategoriaController {
 		Page<CategoriaDTO> categoriasDTO = categorias.map(categoria -> new CategoriaDTO(categoria));
 		return ResponseEntity.ok().body(categoriasDTO);
 	}
-	
 }

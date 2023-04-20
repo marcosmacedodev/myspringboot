@@ -33,9 +33,26 @@ public class CategoriaService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));	
 	}
 	
-	public Categoria save(Categoria categoria) 
+	public Categoria insert(Categoria categoria) 
 	{
+		categoria.setId(null);
 		return cr.save(categoria);
+	}
+	
+	public List<Categoria> insertAll(List<Categoria> categorias) {
+		return cr.saveAll(categorias);
+	}
+	
+	public Categoria update(Categoria categoria, Integer id) {
+		categoria.setId(id);
+		Categoria categoriaDB = find(id);
+		validarCategoria(categoria, categoriaDB);
+		return categoriaDB;
+	}
+	
+	private void validarCategoria(Categoria categoria, Categoria categoriaDB) {
+		
+		if (categoria.getNome() != null) categoriaDB.setNome(categoria.getNome());
 	}
 	
 	public Categoria remove(Integer id){

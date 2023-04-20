@@ -73,6 +73,10 @@ public class PedidoService {
 		return pedido;
 	}
 	
+	public List<Pedido> insertAll(List<Pedido> pedidos){
+		return pr.saveAll(pedidos);
+	}
+	
 	public Pedido remove(Integer id) {
 		Pedido pedido = find(id);
 		pr.delete(pedido);

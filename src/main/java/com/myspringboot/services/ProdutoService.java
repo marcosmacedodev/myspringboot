@@ -29,6 +29,19 @@ public class ProdutoService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Produto.class.getName()));
 	}
 	
+	public List<Produto> findAll() {
+		return pr.findAll();
+	}
+	
+	public Produto insert(Produto produto) {
+		produto.setId(null);
+		return pr.save(produto);
+	}
+	
+	public List<Produto> insertAll(List<Produto> produtos){
+		return pr.saveAll(produtos);
+	}
+	
 	public Page<Produto> search(String nome, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		List<Categoria> categorias = cr.findAllById(ids);
