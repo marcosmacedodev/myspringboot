@@ -69,7 +69,7 @@ public class PedidoService {
 			ip.setPedido(pedido);
 		}
 		ips.insertAll(pedido.getItens());
-		emailService.sendOrderConfirmationEmail(pedido);
+		emailService.sendOrderConfirmationHtmlEmail(pedido);
 		return pedido;
 	}
 	
