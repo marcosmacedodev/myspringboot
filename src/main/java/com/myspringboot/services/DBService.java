@@ -20,6 +20,7 @@ import com.myspringboot.model.PagamentoComCartao;
 import com.myspringboot.model.Pedido;
 import com.myspringboot.model.Produto;
 import com.myspringboot.model.enums.EstadoPagamento;
+import com.myspringboot.model.enums.Perfil;
 import com.myspringboot.model.enums.TipoCliente;
 import com.myspringboot.repositories.CategoriaRepository;
 import com.myspringboot.repositories.CidadeRepository;
@@ -88,13 +89,20 @@ public class DBService {
 		Cidade c2 = new Cidade(null, "São Paulo");
 		Cidade c3 = new Cidade(null, "Campinas");
 		
-		Cliente cli1 = new Cliente(null, "Marcos Macedo", "marcos.macedo89@outlook.com.br", "36378912377", TipoCliente.PESSOA_FISICA, bcpe.encode("123"));
+		Cliente cli1 = new Cliente(null, "Maria Silva", "marcos.macedo89@outlook.com.br", "36378912377", TipoCliente.PESSOA_FISICA, bcpe.encode("123"));
 		cli1.getTelefones().add("27363323");
 		cli1.getTelefones().add("93838393");
 		
+		Cliente cli2 = new Cliente(null, "Jurema Gonçalves", "ricardo.paiva.macedo@hotmail.com", "36378912379", TipoCliente.PESSOA_FISICA, bcpe.encode("123"));
+		cli2.addPerfil(Perfil.ADMIN);
+		cli2.getTelefones().add("27363323");
+		cli2.getTelefones().add("93838393");
+		
+		
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834");
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012");
-
+		Endereco e3 = new Endereco(null, "Avenida Floriano", "2106", null, "Centro", "28177012");
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"));
 		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"));
@@ -106,7 +114,8 @@ public class DBService {
 		ItemPedido ip2 = new ItemPedido(0.0, 2, 80.00);
 		ItemPedido ip3 = new ItemPedido(100.00, 1, 800.00);
 		
-		//------------------------------------------------//
+		//-------------------Associações-----------------------------//
+		//-------------------Categorias------------------------------//
 		cat1.setProdutos(Arrays.asList(p1, p2, p3));
 		cat2.setProdutos(Arrays.asList(p2, p4));
 		cat3.setProdutos(Arrays.asList(p5, p6));
@@ -114,7 +123,9 @@ public class DBService {
 		cat5.setProdutos(Arrays.asList(p8));
 		cat6.setProdutos(Arrays.asList(p9, p10));
 		cat7.setProdutos(Arrays.asList(p11));
+		//-------------------Categorias------------------------------//
 		
+		//-------------------Produtos------------------------------//
 		p1.setCategorias(Arrays.asList(cat1, cat4));
 		p2.setCategorias(Arrays.asList(cat1, cat2, cat4));
 		p3.setCategorias(Arrays.asList(cat1, cat4));
@@ -127,27 +138,42 @@ public class DBService {
 		p10.setCategorias(Arrays.asList(cat6));
 		p11.setCategorias(Arrays.asList(cat7));
 		
-		
 		p1.getItensPedido().addAll(Arrays.asList(ip1));
 		p2.getItensPedido().addAll(Arrays.asList(ip3));
 		p3.getItensPedido().addAll(Arrays.asList(ip2));
 		
+		//-------------------Produtos------------------------------//
+		
+		//-------------------Estado------------------------------//
 		est1.setCidades(Arrays.asList(c1));
 		est2.setCidades(Arrays.asList(c2, c3));
+		//-------------------Estado------------------------------//
 		
+		//-------------------Cidade------------------------------//
 		c1.setEstado(est1);
 		c2.setEstado(est2);
 		c3.setEstado(est2);
+		//-------------------Cidade------------------------------//
 		
+		//-------------------Cliente------------------------------//
 		cli1.setEnderecos(Arrays.asList(e1, e2));
 		cli1.setPedidos(Arrays.asList(ped1, ped2));
 		
+		cli2.setEnderecos(Arrays.asList(e3));
+		//-------------------Cliente------------------------------//
+		
+		//-------------------Endereço------------------------------//
 		e1.setCliente(cli1);
 		e2.setCliente(cli1);
+		e3.setCliente(cli2);
 		
 		e1.setCidade(c1);
 		e2.setCidade(c2);
+		e3.setCidade(c3);
 		
+		//-------------------Endereço------------------------------//
+		
+		//-------------------Pedido------------------------------//
 		ped1.setCliente(cli1);
 		ped2.setCliente(cli1);
 		
@@ -162,7 +188,9 @@ public class DBService {
 		
 		pagto1.setPedido(ped1);
 		pagto2.setPedido(ped2);
+		//-------------------Pedido------------------------------//
 		
+		//-------------------Item Pedido------------------------------//
 		ip1.setPedido(ped1);
 		ip2.setPedido(ped1);
 		ip3.setPedido(ped2);
@@ -170,18 +198,18 @@ public class DBService {
 		ip1.setProduto(p1);
 		ip2.setProduto(p3);
 		ip3.setProduto(p2);
+		//-------------------Item Pedido------------------------------//
 		
-		//---------------------------------------------------//
-		
+		//-------------------------Injeção de dados--------------------------//
 		cr.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
 		pr.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 		er.saveAll(Arrays.asList(est1, est2));
 		cir.saveAll(Arrays.asList(c1, c2, c3));
-		clir.saveAll(Arrays.asList(cli1));
-		endr.saveAll(Arrays.asList(e1, e2));
+		clir.saveAll(Arrays.asList(cli1, cli2));
+		endr.saveAll(Arrays.asList(e1, e2, e3));
 		pedr.saveAll(Arrays.asList(ped1, ped2));
 		pagr.saveAll(Arrays.asList(pagto1, pagto2));
 		ir.saveAll(Arrays.asList(ip1, ip2, ip3));
-
+		//-------------------------Injeção de dados--------------------------//
 	}
 }

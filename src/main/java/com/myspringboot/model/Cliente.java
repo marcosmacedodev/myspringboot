@@ -10,12 +10,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.myspringboot.model.enums.Perfil;
 import com.myspringboot.model.enums.TipoCliente;
 
 @Entity
@@ -33,6 +35,10 @@ public class Cliente implements Serializable{
 	@JsonIgnore
 	private String senha;
 	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
+	
 	@OneToMany(mappedBy="cliente", cascade=CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -47,6 +53,7 @@ public class Cliente implements Serializable{
 	public Cliente() {
 		super();
 		// TODO Auto-generated constructor stub
+		addPerfil(Perfil.CLIENTE);
 	}
 	public Cliente(Integer id, String nome, String email, String cpfouCnpJ, TipoCliente tipo, String senha) {
 		super();
@@ -55,6 +62,8 @@ public class Cliente implements Serializable{
 		this.email = email;
 		this.cpfouCnpJ = cpfouCnpJ;
 		this.tipo = (tipo == null) ? null : tipo.getId();
+		this.senha = senha;
+		addPerfil(Perfil.CLIENTE);
 	}
 	public Integer getId() {
 		return id;
@@ -110,4 +119,17 @@ public class Cliente implements Serializable{
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	public Set<Perfil> getPerfis() {
+		Set<Perfil> perfis = new HashSet<>();
+		for(Integer id : this.perfis) {
+			perfis.add(Perfil.toEnum(id));
+		}
+		return perfis;
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getId());
+	}
+	
+	
 }

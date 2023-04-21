@@ -20,7 +20,8 @@ public class WebSecurityConfig{
 	
 	public static final String[] PUBLIC_MATCHERS = {
 			"/produtos/**",
-			"/categorias/**"
+			"/categorias/**",
+			"/clientes/**"
 	};
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
