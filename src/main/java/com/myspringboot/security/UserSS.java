@@ -70,6 +70,13 @@ public class UserSS implements UserDetails{
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	public boolean hasRole(Perfil perfil) {
+
+		GrantedAuthority g = new SimpleGrantedAuthority(perfil.getDescricao());
+		return authorities.contains(g);
+		
+	}
 
 	@Override
 	public boolean isEnabled() {

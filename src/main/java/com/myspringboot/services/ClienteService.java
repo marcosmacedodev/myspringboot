@@ -17,9 +17,12 @@ import com.myspringboot.model.Cliente;
 import com.myspringboot.model.Endereco;
 import com.myspringboot.model.dto.ClienteDTO;
 import com.myspringboot.model.dto.ClienteNewDTO;
+import com.myspringboot.model.enums.Perfil;
 import com.myspringboot.model.enums.TipoCliente;
 import com.myspringboot.repositories.ClienteRepository;
 import com.myspringboot.repositories.EnderecoRepository;
+import com.myspringboot.security.UserSS;
+import com.myspringboot.services.exceptions.AuthorizationException;
 import com.myspringboot.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -33,10 +36,26 @@ public class ClienteService {
 	private BCryptPasswordEncoder bcpe;
 	
 	public List<Cliente> findAll(){
+		
+		UserSS user = UserService.authenticated();
+		
+		if (user == null || !user.hasRole(Perfil.ADMIN))
+		{
+			throw new AuthorizationException("Acesso não autorizado.");
+		}
+		
 		return cr.findAll();
 	}
 	
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId()))
+		{
+			throw new AuthorizationException("Acesso não autorizado.");
+		}
+		
 		Optional<Cliente> obj = cr.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
