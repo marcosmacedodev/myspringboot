@@ -19,7 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.myspringboot.security.JWTAuthenticationFilter;
+import com.myspringboot.security.JwtAuthenticationFilter;
+import com.myspringboot.security.JwtAuthorizationFilter;
 import com.myspringboot.security.JwtUtil;
 
 @Configuration
@@ -42,7 +43,8 @@ public class SecurityConfig {
 		http.cors().and().csrf().disable();
 		http.authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS).permitAll()
 		.anyRequest().authenticated();	
-		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		return http.build();
     }

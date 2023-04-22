@@ -17,13 +17,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myspringboot.model.dto.CredenciaisDTO;
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 
 	
 	private AuthenticationManager am;
 	private JwtUtil ju;
 	
-	public JWTAuthenticationFilter(AuthenticationManager am, JwtUtil ju) {
+	public JwtAuthenticationFilter(AuthenticationManager am, JwtUtil ju) {
 		this.am = am;
 		this.ju = ju;
 	}
