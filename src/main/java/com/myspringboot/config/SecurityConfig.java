@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,6 +25,7 @@ import com.myspringboot.security.JwtAuthorizationFilter;
 import com.myspringboot.security.JwtUtil;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     
 	@Autowired
@@ -34,13 +36,18 @@ public class SecurityConfig {
 	
 	public static final String[] PUBLIC_MATCHERS = {
 			"/produtos/**",
-			"/categorias/**",
+			"/categorias/**"
+	};
+	
+	public static final String[] PUBLIC_MATCHERS_POST = {
 			"/clientes/**"
 	};
 	 
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable();
+		http.authorizeRequests().antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+		.anyRequest().authenticated();	
 		http.authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS).permitAll()
 		.anyRequest().authenticated();	
 		http.addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil));

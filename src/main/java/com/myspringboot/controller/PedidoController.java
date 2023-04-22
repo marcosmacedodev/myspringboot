@@ -51,6 +51,7 @@ public class PedidoController {
 		ps.remove(id);
 		return ResponseEntity.noContent().build();
 	}
+	
 	@RequestMapping(value="/pages", method=RequestMethod.GET)
 	public ResponseEntity<Page<PedidoDTO>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page, 

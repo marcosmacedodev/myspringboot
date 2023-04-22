@@ -27,7 +27,7 @@ public class PagamentoComCartao extends Pagamento {
 		return numeroDeParcelas;
 	}
 
-	public void setNumeroDeParcelas(Integer numeroParcelas) {
-		this.numeroDeParcelas = numeroParcelas;
+	public void setNumeroDeParcelas(Integer numeroDeParcelas) {
+		this.numeroDeParcelas = numeroDeParcelas;
 	}
 }

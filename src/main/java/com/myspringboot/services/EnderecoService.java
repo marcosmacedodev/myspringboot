@@ -28,7 +28,6 @@ public class EnderecoService {
 	}
 	
 	public Endereco insert(Endereco endereco) {
-		endereco.setId(null);
 		return er.save(endereco);
 	}
 	

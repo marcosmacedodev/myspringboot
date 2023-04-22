@@ -51,7 +51,7 @@ public class PedidoService {
 	@Transactional
 	public Pedido insert(Pedido pedido) {
 		pedido.setId(null);
-		pedido.setInstante(new Date());
+		pedido.setInstante(new Date(System.currentTimeMillis()));
 		pedido.setCliente(cls.find(pedido.getCliente().getId()));
 		pedido.setEndereco(es.find(pedido.getEnderecoDeEntrega().getId()));
 		pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);

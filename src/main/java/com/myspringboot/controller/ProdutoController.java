@@ -3,6 +3,7 @@ package com.myspringboot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,13 @@ public class ProdutoController {
 	
 	@Autowired
 	private ProdutoService ps;
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<Produto/*ProdutoDTO*/> get(@PathVariable Integer id){
+		Produto produto = ps.find(id);
+		//ProdutoDTO produtoDTO = new ProdutoDTO(produto);
+		return ResponseEntity.ok().body(produto);
+	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<ProdutoDTO>> findPage(

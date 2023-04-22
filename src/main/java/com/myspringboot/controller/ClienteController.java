@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class ClienteController {
 	
 	@Autowired
 	private ClienteService cs;
-	
+
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> getAll()
 	{
@@ -36,12 +37,14 @@ public class ClienteController {
 		List<ClienteDTO> clientesDTO = clientes.stream().map(cliente -> new ClienteDTO(cliente)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(clientesDTO);	
 	}
+	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> get(@PathVariable Integer id)
 	{
 		Cliente obj = cs.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
+	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> create(@Valid @RequestBody ClienteNewDTO clienteNewDTO){
 		Cliente newCliente = cs.toCliente(clienteNewDTO);
@@ -49,17 +52,20 @@ public class ClienteController {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newCliente.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO clienteDTO, @PathVariable Integer id){
 		Cliente cliente = cs.toCliente(clienteDTO);
 		cs.update(cliente, id);
 		return ResponseEntity.noContent().build();
 	}
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		cs.remove(id);
 		return ResponseEntity.noContent().build();
 	}
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/pages", method=RequestMethod.GET)
 	public ResponseEntity<Page<ClienteDTO>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page, 

@@ -34,7 +34,6 @@ public class ProdutoService {
 	}
 	
 	public Produto insert(Produto produto) {
-		produto.setId(null);
 		return pr.save(produto);
 	}
 	

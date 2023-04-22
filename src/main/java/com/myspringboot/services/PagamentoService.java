@@ -28,7 +28,6 @@ public class PagamentoService {
 	}
 	
 	public Pagamento insert(Pagamento pagamento) {
-		pagamento.setId(null);
 		return pr.save(pagamento);
 	}
 	

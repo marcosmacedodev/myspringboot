@@ -1,8 +1,9 @@
 package com.myspringboot.model.enums;
 
 public enum Perfil {
-	CLIENTE(1, "ROLE_CLIENTE"),
-	ADMIN(2, "ROLE_ADMIN");
+
+	ADMIN(1, "ROLE_ADMIN"),
+	CLIENTE(2, "ROLE_CLIENTE");
 	
 	private Integer id;
 	private String descricao;
@@ -29,8 +30,6 @@ public enum Perfil {
 				return perfil;
 			}
 		}
-		
-		throw new IllegalArgumentException("Inválido id: " + id);
+		throw new IllegalArgumentException("Id inválido: " + id);
 	}
-
 }
