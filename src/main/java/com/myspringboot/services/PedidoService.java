@@ -17,7 +17,10 @@ import com.myspringboot.model.PagamentoComBoleto;
 import com.myspringboot.model.Pedido;
 import com.myspringboot.model.dto.PedidoDTO;
 import com.myspringboot.model.enums.EstadoPagamento;
+import com.myspringboot.model.enums.Perfil;
 import com.myspringboot.repositories.PedidoRepository;
+import com.myspringboot.security.UserSS;
+import com.myspringboot.services.exceptions.AuthorizationException;
 import com.myspringboot.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -40,13 +43,27 @@ public class PedidoService {
 	@Autowired
 	private EmailService emailService;
 	
-	public List<Pedido> findAll(){
-		return pr.findAll();
-	}
+	
+//	public List<Pedido> findAll(){
+//		UserSS user = UserService.authenticated();
+//		if (user == null) return null;
+//		if (user.hasRole(Perfil.ADMIN)) return pr.findAll();
+//		return pr.findAllByClienteId(user.getId());
+//	}
 	
 	public Pedido find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+	
 		Optional<Pedido> obj = pr.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+		Pedido pedido = obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+		
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !pedido.getCliente().getId().equals(user.getId()))
+		{
+			throw new AuthorizationException("Acesso não autorizado");
+		}
+		
+		return pedido;
 	}
 	@Transactional
 	public Pedido insert(Pedido pedido) {
@@ -84,8 +101,13 @@ public class PedidoService {
 	}
 	
 	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso não autorizado");
+		}
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return pr.findAll(pageRequest);
+		Cliente cliente = cls.find(user.getId());
+		return pr.findAllByCliente(cliente, pageRequest);
 	}
 	
 	public Pedido toPedido(PedidoDTO pedidoDTO) {

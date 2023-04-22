@@ -68,7 +68,6 @@ public class SecurityConfig {
         return (web) -> web.ignoring().antMatchers("/ignore1", "/ignore2");
     }
 
-    
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         return new ProviderManager(Arrays.asList(authenticationProvider()));
