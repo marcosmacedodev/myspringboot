@@ -36,26 +36,20 @@ public class ClienteService {
 	private BCryptPasswordEncoder bcpe;
 	
 	public List<Cliente> findAll(){
-		
 		UserSS user = UserService.authenticated();
-		
 		if (user == null || !user.hasRole(Perfil.ADMIN))
 		{
 			throw new AuthorizationException("Acesso não autorizado.");
 		}
-		
 		return cr.findAll();
 	}
 	
 	public Cliente find(Integer id) {
-		
 		UserSS user = UserService.authenticated();
-		
 		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId()))
 		{
 			throw new AuthorizationException("Acesso não autorizado.");
 		}
-		
 		Optional<Cliente> obj = cr.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
@@ -74,11 +68,11 @@ public class ClienteService {
 	
 	public Cliente update(Cliente cliente, Integer id) {
 		Cliente clienteBD = find(id);
-		validarCliente(clienteBD, cliente);
+		validateCliente(clienteBD, cliente);
 		return cr.save(clienteBD);
 	}
 	
-	private void validarCliente(Cliente clienteBD, Cliente cliente) {
+	private void validateCliente(Cliente clienteBD, Cliente cliente) {
 		if(cliente.getNome() != null) {
 			clienteBD.setNome(cliente.getNome());
 		}
