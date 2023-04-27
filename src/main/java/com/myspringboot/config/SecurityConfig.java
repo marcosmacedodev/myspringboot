@@ -36,12 +36,14 @@ public class SecurityConfig {
 	
 	public static final String[] PUBLIC_MATCHERS = {
 			"/produtos/**",
-			"/categorias/**"
+			"/categorias/**",
+			"/files/**"
 	};
 	
 	public static final String[] PUBLIC_MATCHERS_POST = {
-			"/clientes/**",
-			"/auth/forgot/**"
+			"/clientes/",
+			"/clientes/picture",
+			"/auth/forgot/**",
 	};
 	 
 	@Bean

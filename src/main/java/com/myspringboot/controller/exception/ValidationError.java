@@ -26,7 +26,4 @@ public class ValidationError extends ResponseError {
 	{
 		this.listError.add(fieldMessage);
 	}
-	
-	
-
 }

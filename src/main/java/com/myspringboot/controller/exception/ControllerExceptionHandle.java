@@ -30,14 +30,7 @@ public class ControllerExceptionHandle {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
 		
 	}
-//	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-//	public ResponseEntity<ResponseError> httpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
-//		
-//		ResponseError err = new ResponseError("Método não permitido", HttpStatus.METHOD_NOT_ALLOWED.value(), System.currentTimeMillis(), request.getRequestURI());
-//		
-//		return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(err);
-//		
-//	}
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ResponseError> methodArgumentNotValid(MethodArgumentNotValidException e, HttpServletRequest request){
 		

@@ -1,5 +1,6 @@
 package com.myspringboot.services;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.myspringboot.model.Cidade;
 import com.myspringboot.model.Cliente;
@@ -34,6 +36,8 @@ public class ClienteService {
 	private EnderecoRepository er;
 	@Autowired
 	private BCryptPasswordEncoder bcpe;
+	@Autowired
+	private DropBoxService dbs;
 	
 	public List<Cliente> findAll(){
 		UserSS user = UserService.authenticated();
@@ -115,6 +119,11 @@ public class ClienteService {
 	
 	public Cliente toCliente(ClienteDTO clienteDTO) {
 		return new Cliente(null, clienteDTO.getNome(), clienteDTO.getEmail(), null, null, null);
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		
+		return dbs.upload(multipartFile);
 	}
 
 }
