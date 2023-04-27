@@ -25,6 +25,7 @@ import com.myspringboot.repositories.ClienteRepository;
 import com.myspringboot.repositories.EnderecoRepository;
 import com.myspringboot.security.UserSS;
 import com.myspringboot.services.exceptions.AuthorizationException;
+import com.myspringboot.services.exceptions.FileException;
 import com.myspringboot.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -122,7 +123,9 @@ public class ClienteService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) {
-		
+		if (multipartFile == null) {
+			throw new FileException("Arquivo não encontrado");
+		}
 		return dbs.upload(multipartFile);
 	}
 

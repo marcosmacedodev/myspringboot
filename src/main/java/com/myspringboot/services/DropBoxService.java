@@ -14,6 +14,7 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.GetTemporaryLinkResult;
 import com.dropbox.core.v2.files.UploadErrorException;
+import com.myspringboot.services.exceptions.FileException;
 
 @Service
 public class DropBoxService {
@@ -22,25 +23,19 @@ public class DropBoxService {
 	private DbxClientV2 dbxClientV2;
 	
 	public URI upload(MultipartFile file) {
-		
-		if (file == null) {
-			throw new RuntimeException("Arquivo não encontrado");
-		}
-		
-		String filename = file.getOriginalFilename();
-		InputStream is = null;
 		try {
+			String filename = file.getOriginalFilename();
+			InputStream is = null;
 			is = file.getInputStream();
+			String contentType = file.getContentType();
+			return upload(is, filename, contentType);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new FileException("Erro de: " +  e.getMessage());
 		}
-		String contentType = file.getContentType();
-		
-		return upload(is, filename, contentType);
 	}
 	
-	public URI upload(InputStream is, String filename, String contentType) {
+	public URI upload(InputStream is, String filename, String contentType) throws IOException {
 		try {
 			FileMetadata metadata = dbxClientV2.files()
 					.uploadBuilder("/" + filename)
@@ -50,21 +45,13 @@ public class DropBoxService {
 
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new FileException("Erro de: " + e.getMessage());
 		} catch (UploadErrorException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new FileException("Erro de: " + e.getMessage());
 		} catch (DbxException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new FileException("Erro de: " + e.getMessage());
 		}
-		
-		return null;
 	}
-	
-	
 }

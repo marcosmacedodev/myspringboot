@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.myspringboot.services.exceptions.AuthorizationException;
+import com.myspringboot.services.exceptions.FileException;
 import com.myspringboot.services.exceptions.ObjectNotFoundException;
 
 @ControllerAdvice
@@ -48,4 +49,11 @@ public class ControllerExceptionHandle {
 		ResponseError err = new ResponseError(e.getMessage(), HttpStatus.FORBIDDEN.value(), System.currentTimeMillis(), request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
+	
+	@ExceptionHandler(FileException.class)
+	public ResponseEntity<ResponseError> file(FileException e, HttpServletRequest request){
+		ResponseError err = new ResponseError(e.getMessage(), HttpStatus.BAD_REQUEST.value(), System.currentTimeMillis(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
 }
