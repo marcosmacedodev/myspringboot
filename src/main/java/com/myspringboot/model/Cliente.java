@@ -32,8 +32,10 @@ public class Cliente implements Serializable{
 	private String email;
 	private String cpfouCnpJ;
 	private Integer tipo;
+	
 	@JsonIgnore
 	private String senha;
+	private String imageUrl;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="PERFIS")
@@ -129,6 +131,12 @@ public class Cliente implements Serializable{
 	
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getId());
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 	

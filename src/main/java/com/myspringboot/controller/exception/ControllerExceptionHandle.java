@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.myspringboot.services.exceptions.AuthorizationException;
 import com.myspringboot.services.exceptions.FileException;
@@ -29,7 +30,6 @@ public class ControllerExceptionHandle {
 		
 		ResponseError err = new ResponseError("Não é possível excluir este objeto, existem outros objetos vínculados a ele.", HttpStatus.INTERNAL_SERVER_ERROR.value(), System.currentTimeMillis(), request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
-		
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -56,4 +56,9 @@ public class ControllerExceptionHandle {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 	
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	public ResponseEntity<ResponseError> maxUploadSize(MaxUploadSizeExceededException e, HttpServletRequest request){
+		ResponseError err = new ResponseError(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value(), System.currentTimeMillis(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
+	}
 }

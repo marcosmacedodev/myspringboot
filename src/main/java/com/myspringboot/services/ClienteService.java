@@ -1,11 +1,17 @@
 package com.myspringboot.services;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -39,6 +45,12 @@ public class ClienteService {
 	private BCryptPasswordEncoder bcpe;
 	@Autowired
 	private DropBoxService dbs;
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
+	@Value("${img.profile.size}")
+	private int size;
+	@Autowired
+	private ImageService ims;
 	
 	public List<Cliente> findAll(){
 		UserSS user = UserService.authenticated();
@@ -56,7 +68,12 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso não autorizado.");
 		}
 		Optional<Cliente> obj = cr.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+		
+		Cliente cliente = obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+		
+		cliente.setImageUrl(dbs.getLink(cliente.getImageUrl()));
+		
+		return cliente;
 	}
 
 	@Transactional
@@ -75,6 +92,10 @@ public class ClienteService {
 		Cliente clienteBD = find(id);
 		validateCliente(clienteBD, cliente);
 		return cr.save(clienteBD);
+	}
+	
+	public Cliente update(Cliente cliente) {
+		return cr.save(cliente);
 	}
 	
 	private void validateCliente(Cliente clienteBD, Cliente cliente) {
@@ -122,11 +143,51 @@ public class ClienteService {
 		return new Cliente(null, clienteDTO.getNome(), clienteDTO.getEmail(), null, null, null);
 	}
 	
-	public URI uploadProfilePicture(MultipartFile multipartFile) {
+	private void check(final MultipartFile multipartFile) {
 		if (multipartFile == null) {
-			throw new FileException("Arquivo não encontrado");
+			throw new FileException("A requesição está nula.");
 		}
-		return dbs.upload(multipartFile);
+		
+		if (multipartFile.isEmpty()) {
+			throw new FileException("Selecione um arquivo para upload");
+		}
+		
+		String ext = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+		//Long size = multipartFile.getSize();
+		String contentType = multipartFile.getContentType();
+		
+		if (!"image/jpeg".equals(contentType) || !"jpg".equals(ext)) {
+			throw new FileException("Somente tipo de conteúdo (image/jpeg) é permitido");
+		}
 	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		check(multipartFile);
+		UserSS user = UserService.authenticated();
+		if(user == null) {
+			throw new AuthorizationException("Acesso não autorizado");
+		}
 
+		Cliente cliente = find(user.getId());
+		try {
+			//BufferedImage buf = ims.getBufferedImage(multipartFile);
+			//buf = ims.cropSquare(buf);
+			//buf = ims.resize(buf, size);
+			
+			//String filename = prefix + user.getId() + ".jpg";
+			String contentType = multipartFile.getContentType();
+			//InputStream is = ims.getInputStream(buf, "jpg");
+			String url = dbs.upload(multipartFile.getInputStream(), 
+					multipartFile.getOriginalFilename(), contentType);
+			cliente.setImageUrl(url);
+			update(cliente);
+			return new URI(dbs.getLink(url));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new FileException("Não foi possível ler o arquivo");
+		}catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			throw new FileException("Não foi possível gerar a URI de imagem do cliente");
+		}
+	}
 }

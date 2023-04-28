@@ -17,9 +17,12 @@ public class DropBoxConfig {
 	@Value("${dropbox.access.token}")
 	private String access_token;
 	
+	@Value("${dropbox.app.name}")
+	private String app_name;
+	
 	@Bean
 	public DbxClientV2 dbxClientV2() throws DbxApiException, DbxException, FileNotFoundException, IOException {
-		DbxRequestConfig config = DbxRequestConfig.newBuilder("my_bucket_picture").build();
+		DbxRequestConfig config = DbxRequestConfig.newBuilder(app_name).build();
         DbxClientV2 client = new DbxClientV2(config, access_token);
         return client;        
 	}
