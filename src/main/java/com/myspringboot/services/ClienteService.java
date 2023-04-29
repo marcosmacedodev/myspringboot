@@ -53,13 +53,10 @@ public class ClienteService {
 	//private ImageService ims;
 	
 	public Cliente findByEmail(String email) {
-		
 		UserSS user = UserService.authenticated();
-		
 		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
 			throw new AuthorizationException("Acesso não autorizado");
 		}
-		
 		Cliente cliente = cr.findByEmail(email);
 		cliente = find(cliente.getId());
 		return cliente;
@@ -81,11 +78,8 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso não autorizado.");
 		}
 		Optional<Cliente> obj = cr.findById(id);
-		
 		Cliente cliente = obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
-		
 		cliente.setImageUrl(dbs.getLink(cliente.getImageUrl()));
-		
 		return cliente;
 	}
 
@@ -103,7 +97,7 @@ public class ClienteService {
 	
 	public Cliente update(Cliente cliente, Integer id) {
 		Cliente clienteBD = find(id);
-		validateCliente(clienteBD, cliente);
+		update(clienteBD, cliente);
 		return cr.save(clienteBD);
 	}
 	
@@ -111,7 +105,7 @@ public class ClienteService {
 		return cr.save(cliente);
 	}
 	
-	private void validateCliente(Cliente clienteBD, Cliente cliente) {
+	private void update(Cliente clienteBD, Cliente cliente) {
 		if(cliente.getNome() != null) {
 			clienteBD.setNome(cliente.getNome());
 		}

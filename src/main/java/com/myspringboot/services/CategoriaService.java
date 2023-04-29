@@ -46,13 +46,13 @@ public class CategoriaService {
 	public Categoria update(Categoria categoria, Integer id) {
 		categoria.setId(id);
 		Categoria categoriaDB = find(id);
-		validarCategoria(categoria, categoriaDB);
-		return categoriaDB;
+		update(categoria, categoriaDB);
+		return cr.save(categoriaDB);
 	}
 	
-	private void validarCategoria(Categoria categoria, Categoria categoriaDB) {
+	private void update(Categoria categoria, Categoria categoriaDB) {
 		
-		if (categoria.getNome() != null) categoriaDB.setNome(categoria.getNome());
+		if(categoria.getNome() != null) categoriaDB.setNome(categoria.getNome());
 	}
 	
 	public Categoria remove(Integer id){
