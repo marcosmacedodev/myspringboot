@@ -19,14 +19,12 @@ public class CidadeService {
 	private EstadoService es;;
 	
 	public Cidade find(Integer id) {
-
 		Optional<Cidade> obj = cr.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cidade.class.getName()));
 
 	}
 	
 	public List<Cidade> findAll(Integer estadoID){
-		
 		return cr.findAllByEstado(es.find(estadoID));
 	}
 	
