@@ -15,6 +15,8 @@ public class CidadeService {
 
 	@Autowired
 	private CidadeRepository cr;
+	@Autowired
+	private EstadoService es;;
 	
 	public Cidade find(Integer id) {
 
@@ -23,8 +25,9 @@ public class CidadeService {
 
 	}
 	
-	public List<Cidade> findAll(){
-		return cr.findAll();
+	public List<Cidade> findAll(Integer estadoID){
+		
+		return cr.findAllByEstado(es.find(estadoID));
 	}
 	
 	public Cidade insert(Cidade cidade) {

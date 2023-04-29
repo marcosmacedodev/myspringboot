@@ -33,6 +33,12 @@ public class ClienteController {
 	
 	@Autowired
 	private ClienteService cs;
+	
+	@RequestMapping(value="/email", method=RequestMethod.GET)
+	public ResponseEntity<Cliente> get(@RequestParam(value="value") String email){
+		Cliente cliente = cs.findByEmail(email);
+		return ResponseEntity.ok().body(cliente);
+	}
 
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> getAll()
@@ -43,7 +49,7 @@ public class ClienteController {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> get(@PathVariable Integer id)
+	public ResponseEntity<Cliente> get(@PathVariable Integer id)
 	{
 		Cliente obj = cs.find(id);
 		return ResponseEntity.ok().body(obj);

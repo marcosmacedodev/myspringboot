@@ -1,8 +1,8 @@
 package com.myspringboot.services;
 
-import java.awt.image.BufferedImage;
+//import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
+//import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -49,8 +49,21 @@ public class ClienteService {
 	private String prefix;
 	@Value("${img.profile.size}")
 	private int size;
-	@Autowired
-	private ImageService ims;
+	//@Autowired
+	//private ImageService ims;
+	
+	public Cliente findByEmail(String email) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso não autorizado");
+		}
+		
+		Cliente cliente = cr.findByEmail(email);
+		cliente = find(cliente.getId());
+		return cliente;
+	}
 	
 	public List<Cliente> findAll(){
 		UserSS user = UserService.authenticated();

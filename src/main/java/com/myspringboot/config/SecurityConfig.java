@@ -34,15 +34,15 @@ public class SecurityConfig {
 	@Autowired
 	private JwtUtil jwtUtil;
 	
-	public static final String[] PUBLIC_MATCHERS = {
+	public static final String[] PUBLIC_MATCHERS_GET = {
 			"/produtos/**",
 			"/categorias/**",
-			"/files/**"
+			"/estados/**"
 	};
 	
 	public static final String[] PUBLIC_MATCHERS_POST = {
 			"/clientes/",
-			"/auth/forgot/**",
+			"/auth/forgot/**"
 	};
 	 
 	@Bean
@@ -50,7 +50,7 @@ public class SecurityConfig {
 		http.cors().and().csrf().disable();
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-		.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS).permitAll()
+		.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 		.anyRequest().authenticated();	
 		http.addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
